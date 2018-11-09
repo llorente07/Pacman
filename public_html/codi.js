@@ -1,16 +1,17 @@
-/* DIRECCIO DELS FANTASMAS I JUGADOR.
- // 1 Dalt       ^
- // 2 Dreta      >
- // 3 Baix       v 
- // 4 Esquerra   <
+/*
+ DIRECCIONS:
+ ^ == 1
+ > == 2
+ v == 3
+ < == 4
  */
 
-//X , Y jugador, direccio Inici i la que vol Anar
-var jugador = new Array();
-var fantasma1 = new Array();
-var fantasma2 = new Array();
-var fantasma3 = new Array();
-// Creacio del Mapa 
+//ARRAY PER PACMAN Y ELS 3 FANTASMAS
+var Pacman = new Array();
+var Fantasma1 = new Array();
+var Fantasma2 = new Array();
+var Fantasma3 = new Array();
+
 var mapa = new Array();
 mapa = [
 
@@ -46,101 +47,128 @@ mapa = [
     mapa [1] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
-function Pacman(){
-    IniciJugador(jugador);
-    IniciFantasma(fantasma1);
-    IniciFantasma(fantasma2);
-    IniciFantasma(fantasma3);
-    mapa1();
+
+//FUNCIO PER INICIAR LES FUNCIONS
+function creacio() {
+    JugadorInici(Pacman);
+    FantasmaInici(Fantasma1);
+    FantasmaInici(Fantasma2);
+    FantasmaInici(Fantasma3);
+    MAPA();
 }
 
-// FUNCION PER DIBUIXAR EL MAPA.
-function mapa1() {
+//DIBUjAR EL MAPA
+// + DIBUJAR JUGADOR + 3 FANTASMAS.
+function MAPA() {
     for (var i = 0; i < 30; i++) {
         for (var j = 0; j < 30; j++) {
             if (mapa[i][j] == 1) {
-                document.write("&nbsp;");
-            }
-            else if(mapa[i][j] == 2) {
+                document.write("*");
+            } else if (mapa[i][j] == 2) {
                 document.write("P");
-            }
-            else if(mapa[i][j] == 3) {
+            } else if (mapa[i][j] == 3) {
                 document.write("F");
-            }
-            else document.write("*");
+            } else
+                document.write("&nbsp;");
         }
         document.write("<br>");
     }
 }
 
-function ComPosicio(y, x) {
-    var comprobar = false;
-    if (mapa[x][y] == 1) {
-        comprobar = true;
-    }
-    return comprobar;
-}
-
-function IniciJugador(lorente) {
+//FUNCIO PER INICIAR EL JUGADOR  EN UNA POSICIO INICIAL
+function JugadorInici(lorente) {
     var x, y;
 
     do {
         x = Math.floor((Math.random() * 30) + 0);
         y = Math.floor((Math.random() * 30) + 0);
-    } while (!ComPosicio(y, x))
+    } while (!CompPos(y, x))
 
-    //VALOR A LA POSICIO DEL JUGADOR.
-    lorente [1] = x;
-    lorente [2] = y;
-    lorente [3] = DirIniciAlea(y, x);
-    lorente [4] = DirIniciAlea(y, x);
-    
-    //DINTRE DEL MAPA
+
+    //DADES INICIALS DEL JUGADOR
+    lorente[1] = x;
+    lorente[2] = y;
+    lorente[3] = DirInicial(y, x);
+    lorente[4] = DirInicial(y, x);
+
+    //DADES INICIALS DEL JUGADOR
     mapa[y][x] = 2;
 }
 
-function IniciFantasma(fantasma) {
+//FUNCIO PER INICIAR ELS FANTASMAS EN UNA POSICIO INICIAL
+function FantasmaInici(Fanta) {
     var x, y;
-    var Espai = false;
+    var Sep = false;
 
     do {
         x = Math.floor((Math.random() * 30) + 0);
         y = Math.floor((Math.random() * 30) + 0);
-    } while (!ComPosicio(y, x))
+    } while (!CompPos(y, x))
 
-    //VALORS FANTASMA
-    fantasma[1] = x;
-    fantasma[2] = y;
-    fantasma[3] = DirIniciAlea(y, x);
+    //DADES INICIALS DELS FANTASMAS
+    Fanta[1] = x;
+    Fanta[2] = y;
+    Fanta[3] = DirInicial(y, x);
 
-    //FIQUEN AL MAPA
+    //FANTASMA AL MAPA
     mapa[y][x] = 3;
 }
 
-function DirIniciAlea(y, x) {
-    var dir = new Array();
-    var correcta = false;
-    var DirInici;
-    var aux;
-    
-    //Comprobacio de Direccions.
-    if(ComPosicio(y + 1 x) = 1) dir[1] = 1;
-    else dir[1] = 0;
-    if(ComPosicio(y, x + 1) = 1) dir[2] = 1;
-    else dir[2] = 0;
-    if(ComPosicio(y - 1, x) = 1) dir[3] = 1;
-    else dir[3] = 0;
-    if(ComPosicio(y, x - 1) = 1) dir[4] = 1;
-    else dir[4] = 0;
+//FUNCIO PER COMPROBAR SI LA POSICIO ES CORRECTA
+function CompPos(y, x) {
+    var funciona = false;
+    if (mapa[y][x] == 0) {
+        funciona = true;
+    }
+    return funciona;
+}
 
+//DIRECCIO INICIAL ALEATORIA
+function DirInicial(y, x) {
+    var direc = new Array();
+    var DirInic, aux, espaiLliure = false;
+
+    //COMPROBACIO DE LES DIRECCIONS
+    if (CompPos(y + 1, x) == 1)
+        direc[1] = 1;
+    else
+        direc[1] = 0;
+
+    if (CompPos(y, x + 1) == 1)
+        direc[2] = 1;
+    else
+        direc[2] = 0;
+
+    if (CompPos(y - 1, x) == 1)
+        direc[3] = 1;
+    else
+        direc[3] = 0;
+
+    if (CompPos(y, x - 1) == 1)
+        direc[4] = 1;
+    else
+        direc[4] = 0;
+
+    //DO WHILE PER COMPROBAR SI LA VARIABLE AUXILIAR NO ESTA OCUPADA
     do {
         aux = Math.floor((Math.random() * 4) + 1);
-        if(dir [aux] = 1) {
-            correcta = true;
-            DirInici = aux;
+        if (direc[aux] == 1) {
+            espaiLliure = true;
+            DirInic = aux;
         }
-    } while (!correcta)
+    } while (!espaiLliure)
 
-    //retornem la direccio inicial
-    return DirInici;
+    //DIRECCIO INICIAL
+    return DirInic;
 }
+
+//CONTADOR PARA QUE SE MUEVEN LOS ELEMENTOS
+function movimiento(){
+	var contador;
+	FantasmaInici(Fanta)
+                
+        JugadorInici(lorente) 
+         
+}
+
+setInterval('movimiento()',1000);
