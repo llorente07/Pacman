@@ -1,174 +1,286 @@
-/*
- DIRECCIONS:
- ^ == 1
- > == 2
- v == 3
- < == 4
- */
-
-//ARRAY PER PACMAN Y ELS 3 FANTASMAS
-var Pacman = new Array();
-var Fantasma1 = new Array();
-var Fantasma2 = new Array();
-var Fantasma3 = new Array();
-
+// MAPA
 var mapa = new Array();
 mapa = [
 
-    mapa [30] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    mapa [29] = [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    mapa [28] = [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1],
-    mapa [27] = [1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-    mapa [26] = [1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1],
-    mapa [25] = [1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1],
-    mapa [24] = [1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-    mapa [23] = [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
-    mapa [22] = [1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-    mapa [21] = [1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
-    mapa [20] = [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    mapa [19] = [1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1],
-    mapa [18] = [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1],
-    mapa [17] = [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-    mapa [16] = [1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
-    mapa [15] = [1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1],
-    mapa [14] = [1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
-    mapa [13] = [1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
-    mapa [12] = [1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1],
-    mapa [11] = [1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
-    mapa [10] = [1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-    mapa [9] = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
-    mapa [8] = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    mapa [7] = [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
-    mapa [6] = [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-    mapa [5] = [1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1],
-    mapa [4] = [1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1],
-    mapa [3] = [1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1],
-    mapa [2] = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    mapa [1] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    mapa [30] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    mapa [29] = [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    mapa [28] = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0],
+    mapa [27] = [0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0],
+    mapa [26] = [0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0],
+    mapa [25] = [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0],
+    mapa [24] = [0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0],
+    mapa [23] = [0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0],
+    mapa [22] = [0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0],
+    mapa [21] = [0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0],
+    mapa [20] = [0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    mapa [19] = [0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0],
+    mapa [18] = [0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0],
+    mapa [17] = [0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0],
+    mapa [16] = [0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+    mapa [15] = [0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+    mapa [14] = [0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+    mapa [13] = [0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+    mapa [12] = [0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+    mapa [11] = [0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+    mapa [10] = [0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0],
+    mapa [9] = [0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+    mapa [8] = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    mapa [7] = [0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    mapa [6] = [0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0],
+    mapa [5] = [0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+    mapa [4] = [0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+    mapa [3] = [0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+    mapa [2] = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    mapa [1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
+var lorente = new Array();
+var Fanta1 = new Array();
+var Fanta2 = new Array();
+var Fanta3 = new Array();
+var Pacman = 0;
+var Direc = new Array();
 
-//FUNCIO PER INICIAR LES FUNCIONS
-function creacio() {
-    JugadorInici(Pacman);
-    FantasmaInici(Fantasma1);
-    FantasmaInici(Fantasma2);
-    FantasmaInici(Fantasma3);
-    MAPA();
+function PROBA() {
+    IniciLorente(lorente);
+    IniciFantasma(Fanta1);
+    IniciFantasma(Fanta2);
+    IniciFantasma(Fanta3);
+    Crear();
+    setInterval(Moviment, 260);
 }
 
-//DIBUjAR EL MAPA
-// + DIBUJAR JUGADOR + 3 FANTASMAS.
-function MAPA() {
+function Crear() {
+    var map = "";
     for (var i = 0; i < 30; i++) {
         for (var j = 0; j < 30; j++) {
             if (mapa[i][j] == 1) {
-                document.write("*");
+                map += "&nbsp;";
             } else if (mapa[i][j] == 2) {
-                document.write("P");
+                map += "<span class='Llorente'>P</span>";
             } else if (mapa[i][j] == 3) {
-                document.write("F");
+                map += "<span class='Fanta'>F</span>";
             } else
-                document.write("&nbsp;");
+                map += "*";
         }
-        document.write("<br>");
+        map += "<br>";
     }
+
+    document.getElementById("mapa").innerHTML = map;
 }
 
-//FUNCIO PER INICIAR EL JUGADOR  EN UNA POSICIO INICIAL
-function JugadorInici(lorente) {
+
+function IniciLorente(Llorente) {
     var x, y;
 
     do {
         x = Math.floor((Math.random() * 30) + 0);
         y = Math.floor((Math.random() * 30) + 0);
-    } while (!CompPos(y, x))
+    } while (!ComPos(y, x))
 
 
-    //DADES INICIALS DEL JUGADOR
-    lorente[1] = x;
-    lorente[2] = y;
-    lorente[3] = DirInicial(y, x);
-    lorente[4] = DirInicial(y, x);
 
-    //DADES INICIALS DEL JUGADOR
+    Llorente[1] = x;
+    Llorente[2] = y;
+    Llorente[3] = DirInici(y, x);
+    Llorente[4] = DirInici(y, x);
+
+
     mapa[y][x] = 2;
+
 }
 
-//FUNCIO PER INICIAR ELS FANTASMAS EN UNA POSICIO INICIAL
-function FantasmaInici(Fanta) {
+
+function IniciFantasma(Fanta) {
     var x, y;
-    var Sep = false;
+    var separats = false;
 
     do {
         x = Math.floor((Math.random() * 30) + 0);
         y = Math.floor((Math.random() * 30) + 0);
-    } while (!CompPos(y, x))
+    } while (!ComPos(y, x))
 
-    //DADES INICIALS DELS FANTASMAS
+
     Fanta[1] = x;
     Fanta[2] = y;
-    Fanta[3] = DirInicial(y, x);
+    Fanta[3] = DirInici(y, x);
 
-    //FANTASMA AL MAPA
+
     mapa[y][x] = 3;
 }
 
-//FUNCIO PER COMPROBAR SI LA POSICIO ES CORRECTA
-function CompPos(y, x) {
-    var funciona = false;
-    if (mapa[y][x] == 0) {
-        funciona = true;
-    }
-    return funciona;
+function Moviment() {
+
+    MFanta(Fanta1);
+    MFanta(Fanta2);
+    MFanta(Fanta3);
+    Pacman++;
+
+    Crear();
 }
 
-//DIRECCIO INICIAL ALEATORIA
-function DirInicial(y, x) {
-    var direc = new Array();
-    var DirInic, aux, espaiLliure = false;
+function ComPos(y, x) {
+    var C = false;
+    if (mapa[y][x] == 1) {
+        C = true;
+    }
+    return C;
+}
 
-    //COMPROBACIO DE LES DIRECCIONS
-    if (CompPos(y + 1, x) == 1)
-        direc[1] = 1;
+function ComDirec(Mur, Direc) {
+    var x = Mur[2];
+    var y = Mur[1];
+
+    if (ComPos(x + 1, y) == 1)
+        Direc[1] = 1;
     else
-        direc[1] = 0;
-
-    if (CompPos(y, x + 1) == 1)
-        direc[2] = 1;
+        Direc[1] = 0;
+    if (ComPos(x, y + 1) == 1)
+        Direc[2] = 1;
     else
-        direc[2] = 0;
-
-    if (CompPos(y - 1, x) == 1)
-        direc[3] = 1;
+        Direc[2] = 0;
+    if (ComPos(x - 1, y) == 1)
+        Direc[3] = 1;
     else
-        direc[3] = 0;
-
-    if (CompPos(y, x - 1) == 1)
-        direc[4] = 1;
+        Direc[3] = 0;
+    if (ComPos(x, y - 1) == 1)
+        Direc[4] = 1;
     else
-        direc[4] = 0;
+        Direc[4] = 0;
+}
 
-    //DO WHILE PER COMPROBAR SI LA VARIABLE AUXILIAR NO ESTA OCUPADA
+
+function DirInici(y, x) {
+    var Direc = new Array();
+    var Elliure = false;
+    var DirIn;
+    var aux;
+
+
+    if (ComPos(y + 1, x) == 1)
+        Direc[1] = 1;
+    else
+        Direc[1] = 0;
+    if (ComPos(y, x + 1) == 1)
+        Direc[2] = 1;
+    else
+        Direc[2] = 0;
+    if (ComPos(y - 1, x) == 1)
+        Direc[3] = 1;
+    else
+        Direc[3] = 0;
+    if (ComPos(y, x - 1) == 1)
+        Direc[4] = 1;
+    else
+        Direc[4] = 0;
+
+
     do {
         aux = Math.floor((Math.random() * 4) + 1);
-        if (direc[aux] == 1) {
-            espaiLliure = true;
-            DirInic = aux;
+        if (Direc[aux] == 1) {
+            Elliure = true;
+            DirIn = aux;
         }
-    } while (!espaiLliure)
+    } while (!Elliure)
 
-    //DIRECCIO INICIAL
-    return DirInic;
+
+    return DirIn;
 }
 
-//CONTADOR PARA QUE SE MUEVEN LOS ELEMENTOS
-function movimiento(){
-	var contador;
-	FantasmaInici(Fanta)
-                
-        JugadorInici(lorente) 
-         
+
+function NDFantasma(Fanta) {
+    var Elliure = false;
+    var NDir;
+    var aux;
+    var PosDir = 0;
+
+    ComDirec(Fanta, Direc);
+
+
+    for (var i = 1; i < 5; i++) {
+        if (Direc[i] === 1)
+            PosDir++;
+    }
+
+
+    if (PosDir > 2) {
+        do {
+            aux = Math.floor((Math.random() * 4) + 1);
+            if ((Direc[aux] == 1) && (Fanta[3] != SCont(Fanta))) {
+                Elliure = true;
+                NDir = aux;
+            }
+        } while (!Elliure)
+    }
+
+
+    if (PosDir <= 2) {
+        do {
+            aux = Math.floor((Math.random() * 4) + 1);
+            if (Direc[aux] == 1) {
+
+                if (ChoC(Direc)) {
+                    Elliure = true;
+                    NDir = Fanta[3];
+                } else {
+                    Elliure = true;
+                    NDir = aux;
+                }
+            }
+        } while (!Elliure)
+    }
+
+
+    Fanta[3] = NDir;
+}
+function MFanta(Fanta) {
+    NDFantasma(Fanta);
+
+    if (Fanta[3] === 1) {
+        mapa[Fanta[2]][Fanta[1]] = 1;
+        Fanta[2] += 1;
+        mapa[Fanta[2]][Fanta[1]] = 3;
+    }
+    if (Fanta[3] === 2) {
+        mapa[Fanta[2]][Fanta[1]] = 1;
+        Fanta[1] += 1;
+        mapa[Fanta[2]][Fanta[1]] = 3;
+    }
+    if (Fanta[3] === 3) {
+        mapa[Fanta[2]][Fanta[1]] = 1;
+        Fanta[2] += -1;
+        mapa[Fanta[2]][Fanta[1]] = 3;
+    }
+    if (Fanta[3] === 4) {
+        mapa[Fanta[2]][Fanta[1]] = 1;
+        Fanta[1] += -1;
+        mapa[Fanta[2]][Fanta[1]] = 3;
+    }
 }
 
-setInterval('movimiento()',1000);
+function SCont(Fanta) {
+    var Gira;
+    if (Fanta[3] == 1)
+        Gira = 3;
+    if (Fanta[3] == 2)
+        Gira = 4;
+    if (Fanta[3] == 3)
+        Gira = 1;
+    if (Fanta[3] == 4)
+        Gira = 2;
+    return Gira;
+}
+
+
+function ChoC(Direc) {
+    var Pas = false;
+    if ((Direc[1] == 1) && (Direc[3] == 1))
+        Pas = true;
+    if ((Direc[2] == 1) && (Direc[4] == 1))
+        Pas = true;
+    return Pas;
+}
+
+
+
+
