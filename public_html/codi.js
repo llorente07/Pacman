@@ -40,14 +40,17 @@ var Fanta2 = new Array();
 var Fanta3 = new Array();
 var Pacman = 0;
 var Direc = new Array();
+var Teclat = 0;
 
 function PROBA() {
+     var element = document.getElementById("all");  
+     document.onkeydown = Teclat;
     IniciLorente(lorente);
     IniciFantasma(Fanta1);
     IniciFantasma(Fanta2);
     IniciFantasma(Fanta3);
     Crear();
-    setInterval(Moviment, 260);
+    actualiza = setInterval(Moviment, 260);
 }
 
 function Crear() {
@@ -78,18 +81,14 @@ function IniciLorente(Llorente) {
         y = Math.floor((Math.random() * 30) + 0);
     } while (!ComPos(y, x))
 
-
-
     Llorente[1] = x;
     Llorente[2] = y;
     Llorente[3] = DirInici(y, x);
     Llorente[4] = DirInici(y, x);
 
-
     mapa[y][x] = 2;
 
 }
-
 
 function IniciFantasma(Fanta) {
     var x, y;
@@ -100,11 +99,9 @@ function IniciFantasma(Fanta) {
         y = Math.floor((Math.random() * 30) + 0);
     } while (!ComPos(y, x))
 
-
     Fanta[1] = x;
     Fanta[2] = y;
     Fanta[3] = DirInici(y, x);
-
 
     mapa[y][x] = 3;
 }
@@ -115,7 +112,10 @@ function Moviment() {
     MFanta(Fanta2);
     MFanta(Fanta3);
     Pacman++;
-
+    ComColisio(lorente, Fanta1);
+    ComColisio(lorente, Fanta2);
+    ComColisio(lorente, Fanta3);
+    ComTemps(Pacman);
     Crear();
 }
 
@@ -196,12 +196,10 @@ function NDFantasma(Fanta) {
 
     ComDirec(Fanta, Direc);
 
-
     for (var i = 1; i < 5; i++) {
         if (Direc[i] === 1)
             PosDir++;
     }
-
 
     if (PosDir > 2) {
         do {
@@ -212,7 +210,6 @@ function NDFantasma(Fanta) {
             }
         } while (!Elliure)
     }
-
 
     if (PosDir <= 2) {
         do {
@@ -230,9 +227,9 @@ function NDFantasma(Fanta) {
         } while (!Elliure)
     }
 
-
     Fanta[3] = NDir;
 }
+
 function MFanta(Fanta) {
     NDFantasma(Fanta);
 
@@ -271,7 +268,6 @@ function SCont(Fanta) {
     return Gira;
 }
 
-
 function ChoC(Direc) {
     var Pas = false;
     if ((Direc[1] == 1) && (Direc[3] == 1))
@@ -281,6 +277,32 @@ function ChoC(Direc) {
     return Pas;
 }
 
+function ComColisio(lorente, Fanta) {
+    if ((lorente[1] == Fanta[1]) && (lorente[2] == Fanta[2])) {
+        clearTimeout(actualiza);
+        GameOver = true;
+    }
+}
 
+function Teclat(T){ 
+	var Tecla = document.all ? T.which : T.key;
+	if (Tecla == "ArrowUp"&&mapa[lorente[0]-1][lorente[1]]!=0){
+		Teclat = 1; 
+	}
+	else if (Tecla == "ArrowRight"&&mapa[lorente[0]][lorente[1]+1]!=0){
+		Teclat = 2;
+	}
+	else if (Tecla=="ArrowDown"&&mapa[lorente[0]+1][lorente[1]]!=0){
+		Teclat = 3;
+	}	
+	else if (Tecla =="ArrowLeft"&&mapa[lorente[0]][lorente[1]-1]!=0){
+		Teclat = 4; 
+	}
+}
 
-
+function ComTemps (Pacman) {
+    if (Pacman >= 1000) {
+        clearTimeout(actualiza);
+        WIN = true;
+    }
+}
