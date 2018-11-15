@@ -1,4 +1,4 @@
-// MAPA
+//MAPA
 var mapa = new Array();
 mapa = [
 
@@ -34,46 +34,59 @@ mapa = [
     mapa [1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
+//VARIABLES
 var lorente = new Array();
 var Fanta1 = new Array();
 var Fanta2 = new Array();
 var Fanta3 = new Array();
-var Pacman = 0;
+var Actua;
+var KO = false;
+var PacM = 0;
 var Direc = new Array();
-var Teclat = 0;
-
-function PROBA() {
-     var element = document.getElementById("all");  
-     document.onkeydown = Teclat;
-    IniciLorente(lorente);
-    IniciFantasma(Fanta1);
-    IniciFantasma(Fanta2);
-    IniciFantasma(Fanta3);
-    Crear();
-    actualiza = setInterval(Moviment, 260);
-}
+var TeclaPulsada;
 
 function Crear() {
-    var map = "";
+    var canvas = document.getElementById("mapa");
+    var Foto;
     for (var i = 0; i < 30; i++) {
         for (var j = 0; j < 30; j++) {
             if (mapa[i][j] == 1) {
-                map += "&nbsp;";
+                Foto = document.getElementById("Cami");
             } else if (mapa[i][j] == 2) {
-                map += "<span class='Llorente'>P</span>";
+                Foto = document.getElementById("Pacman");
             } else if (mapa[i][j] == 3) {
-                map += "<span class='Fanta'>F</span>";
+                Foto = document.getElementById("Fanta");
             } else
-                map += "*";
-        }
-        map += "<br>";
-    }
+                Foto = document.getElementById("Mur");
 
-    document.getElementById("mapa").innerHTML = map;
+            var ctx = canvas.getContext("2d").drawImage(Foto, j * 19, i * 19, 19, 19);
+        }
+    }
+    document.getElementById("Punts").innerHTML = (Math.floor(PacM));
 }
 
+function StartPacman() {
+    IniciLlorente(lorente);
+    IniciFanta(Fanta1);
+    IniciFanta(Fanta2);
+    IniciFanta(Fanta3);
+    Crear();
+    Actua = setInterval(Moviment, 200);
+}
 
-function IniciLorente(Llorente) {
+function Moviment() {
+    var element = document.getElementById("all");
+    document.onkeydown = Teclado;
+    MLlorente(lorente);
+    MFanta(Fanta1);
+    MFanta(Fanta2);
+    MFanta(Fanta3);
+    PacM++;
+    ComJoc();
+    Crear();
+}
+
+function IniciLlorente(Llorente) {
     var x, y;
 
     do {
@@ -87,12 +100,11 @@ function IniciLorente(Llorente) {
     Llorente[4] = DirInici(y, x);
 
     mapa[y][x] = 2;
-
 }
 
-function IniciFantasma(Fanta) {
+function IniciFanta(Fanta) {
     var x, y;
-    var separats = false;
+    var Espai = false;
 
     do {
         x = Math.floor((Math.random() * 30) + 0);
@@ -106,19 +118,6 @@ function IniciFantasma(Fanta) {
     mapa[y][x] = 3;
 }
 
-function Moviment() {
-
-    MFanta(Fanta1);
-    MFanta(Fanta2);
-    MFanta(Fanta3);
-    Pacman++;
-    ComColisio(lorente, Fanta1);
-    ComColisio(lorente, Fanta2);
-    ComColisio(lorente, Fanta3);
-    ComTemps(Pacman);
-    Crear();
-}
-
 function ComPos(y, x) {
     var C = false;
     if (mapa[y][x] == 1) {
@@ -127,35 +126,33 @@ function ComPos(y, x) {
     return C;
 }
 
-function ComDirec(Mur, Direc) {
-    var x = Mur[2];
-    var y = Mur[1];
+function ComDirec(element, Direc) {
+    var x = element[2];
+    var y = element[1];
 
-    if (ComPos(x + 1, y) == 1)
+    if (ComPos(x + 1, y) != 0)
         Direc[1] = 1;
     else
         Direc[1] = 0;
-    if (ComPos(x, y + 1) == 1)
+    if (ComPos(x, y + 1) != 0)
         Direc[2] = 1;
     else
         Direc[2] = 0;
-    if (ComPos(x - 1, y) == 1)
+    if (ComPos(x - 1, y) != 0)
         Direc[3] = 1;
     else
         Direc[3] = 0;
-    if (ComPos(x, y - 1) == 1)
+    if (ComPos(x, y - 1) != 0)
         Direc[4] = 1;
     else
         Direc[4] = 0;
 }
 
-
 function DirInici(y, x) {
     var Direc = new Array();
-    var Elliure = false;
-    var DirIn;
+    var ELliure = false;
+    var PosIni;
     var aux;
-
 
     if (ComPos(y + 1, x) == 1)
         Direc[1] = 1;
@@ -174,135 +171,219 @@ function DirInici(y, x) {
     else
         Direc[4] = 0;
 
-
     do {
         aux = Math.floor((Math.random() * 4) + 1);
         if (Direc[aux] == 1) {
-            Elliure = true;
-            DirIn = aux;
+            ELliure = true;
+            PosIni = aux;
         }
-    } while (!Elliure)
+    } while (!ELliure)
 
+    return PosIni;
+}
 
-    return DirIn;
+function Reves(Fanta) {
+    var RevesCont;
+    if (Fanta[3] == 1)
+        RevesCont = 3;
+    if (Fanta[3] == 2)
+        RevesCont = 4;
+    if (Fanta[3] == 3)
+        RevesCont = 1;
+    if (Fanta[3] == 4)
+        RevesCont = 2;
+    return RevesCont;
 }
 
 
-function NDFantasma(Fanta) {
-    var Elliure = false;
-    var NDir;
+function DSentits(Direc) {
+    var Dos = false;
+    if ((Direc[1] == 1) && (Direc[3] == 1))
+        Dos = true;
+    if ((Direc[2] == 1) && (Direc[4] == 1))
+        Dos = true;
+    return Dos;
+}
+
+function MLlorente(Llorente) {
+    NDLlorente(Llorente);
+
+    if (Llorente[3] == 1 && mapa[Llorente[2] + 1][Llorente[1]] != 0) {
+        mapa[Llorente[2]][Llorente[1]] = 1;
+
+        Llorente[5] = Llorente[1];
+        Llorente[6] = Llorente[2];
+
+        Llorente[2] += 1;
+
+        mapa[Llorente[2]][Llorente[1]] = 2;
+    }
+    if (Llorente[3] == 2 && mapa[Llorente[2]][Llorente[1] + 1] != 0) {
+        mapa[Llorente[2]][Llorente[1]] = 1;
+        Llorente[5] = Llorente[1];
+        Llorente[6] = Llorente[2];
+        Llorente[1] += 1;
+        mapa[Llorente[2]][Llorente[1]] = 2;
+    }
+    if (Llorente[3] == 3 && mapa[Llorente[2] - 1][Llorente[1]] != 0) {
+        mapa[Llorente[2]][Llorente[1]] = 1;
+        Llorente[5] = Llorente[1];
+        Llorente[6] = Llorente[2];
+        Llorente[2] += -1;
+        mapa[Llorente[2]][Llorente[1]] = 2;
+    }
+    if (Llorente[3] == 4 && mapa[Llorente[2]][Llorente[1] - 1] != 0) {
+        mapa[Llorente[2]][Llorente[1]] = 1;
+        Llorente[5] = Llorente[1];
+        Llorente[6] = Llorente[2];
+        Llorente[1] += -1;
+        mapa[Llorente[2]][Llorente[1]] = 2;
+    }
+}
+
+function MFanta(Fanta) {
+    NDFanta(Fanta);
+
+    if (Fanta[3] == 1) {
+        mapa[Fanta[2]][Fanta[1]] = 1;
+
+        Fanta[5] = Fanta[1];
+        Fanta[6] = Fanta[2];
+
+        Fanta[2] += 1;
+
+        mapa[Fanta[2]][Fanta[1]] = 3;
+    }
+    if (Fanta[3] == 2) {
+        mapa[Fanta[2]][Fanta[1]] = 1;
+        Fanta[5] = Fanta[1];
+        Fanta[6] = Fanta[2];
+        Fanta[1] += 1;
+        mapa[Fanta[2]][Fanta[1]] = 3;
+    }
+    if (Fanta[3] == 3) {
+        mapa[Fanta[2]][Fanta[1]] = 1;
+        Fanta[5] = Fanta[1];
+        Fanta[6] = Fanta[2];
+        Fanta[2] += -1;
+        mapa[Fanta[2]][Fanta[1]] = 3;
+    }
+    if (Fanta[3] == 4) {
+        mapa[Fanta[2]][Fanta[1]] = 1;
+        Fanta[5] = Fanta[1];
+        Fanta[6] = Fanta[2];
+        Fanta[1] += -1;
+        mapa[Fanta[2]][Fanta[1]] = 3;
+    }
+}
+
+function NDLlorente(Llorente) {
+    ComDirec(Llorente, Direc);
+
+    if (Direc[TeclaPulsada] == 1) {
+        Llorente[3] = TeclaPulsada;
+    }
+}
+
+function NDFanta(Fanta) {
+    var ELliure = false;
+    var NewDir;
     var aux;
     var PosDir = 0;
 
     ComDirec(Fanta, Direc);
 
     for (var i = 1; i < 5; i++) {
-        if (Direc[i] === 1)
+        if (Direc[i] == 1)
             PosDir++;
     }
 
     if (PosDir > 2) {
         do {
             aux = Math.floor((Math.random() * 4) + 1);
-            if ((Direc[aux] == 1) && (Fanta[3] != SCont(Fanta))) {
-                Elliure = true;
-                NDir = aux;
+            if ((Direc[aux] != 0) && (Fanta[3] != Reves(Fanta))) {
+                ELliure = true;
+                NewDir = aux;
+                ComColisio(Fanta);
             }
-        } while (!Elliure)
+        } while (!ELliure)
     }
+
 
     if (PosDir <= 2) {
         do {
             aux = Math.floor((Math.random() * 4) + 1);
-            if (Direc[aux] == 1) {
+            if (Direc[aux] != 0) {
 
-                if (ChoC(Direc)) {
-                    Elliure = true;
-                    NDir = Fanta[3];
+                if (DSentits(Direc)) {
+                    ELliure = true;
+                    NewDir = Fanta[3];
+                    ComColisio(Fanta);
                 } else {
-                    Elliure = true;
-                    NDir = aux;
+                    ELliure = true;
+                    NewDir = aux;
+                    ComColisio(Fanta);
                 }
             }
-        } while (!Elliure)
+        } while (!ELliure)
     }
 
-    Fanta[3] = NDir;
+
+    Fanta[3] = NewDir;
 }
 
-function MFanta(Fanta) {
-    NDFantasma(Fanta);
+function ComColisio(Fanta) {
+    var GOVER = false;
 
-    if (Fanta[3] === 1) {
-        mapa[Fanta[2]][Fanta[1]] = 1;
-        Fanta[2] += 1;
-        mapa[Fanta[2]][Fanta[1]] = 3;
+    if (mapa[Fanta[2]][Fanta[1] + 1] == 2) {
+        clearTimeout(Actua);
+        GOVER = true;
     }
-    if (Fanta[3] === 2) {
-        mapa[Fanta[2]][Fanta[1]] = 1;
-        Fanta[1] += 1;
-        mapa[Fanta[2]][Fanta[1]] = 3;
+    if (mapa[Fanta[2]][Fanta[1] - 1] == 2) {
+        clearTimeout(Actua);
+        GOVER = true;
     }
-    if (Fanta[3] === 3) {
-        mapa[Fanta[2]][Fanta[1]] = 1;
-        Fanta[2] += -1;
-        mapa[Fanta[2]][Fanta[1]] = 3;
+    if (mapa[Fanta[2] + 1][Fanta[1]] == 2) {
+        clearTimeout(Actua);
+        GOVER = true;
     }
-    if (Fanta[3] === 4) {
-        mapa[Fanta[2]][Fanta[1]] = 1;
-        Fanta[1] += -1;
-        mapa[Fanta[2]][Fanta[1]] = 3;
+    if (mapa[Fanta[2] - 1][Fanta[1]] == 2) {
+        clearTimeout(Actua);
+        GOVER = true;
     }
-}
 
-function SCont(Fanta) {
-    var Gira;
-    if (Fanta[3] == 1)
-        Gira = 3;
-    if (Fanta[3] == 2)
-        Gira = 4;
-    if (Fanta[3] == 3)
-        Gira = 1;
-    if (Fanta[3] == 4)
-        Gira = 2;
-    return Gira;
-}
 
-function ChoC(Direc) {
-    var Pas = false;
-    if ((Direc[1] == 1) && (Direc[3] == 1))
-        Pas = true;
-    if ((Direc[2] == 1) && (Direc[4] == 1))
-        Pas = true;
-    return Pas;
-}
+    if (lorente[1] == Fanta[1] && lorente[2] == Fanta[2]) {
+        clearTimeout(Actua);
+        GOVER = true;
+    }
 
-function ComColisio(lorente, Fanta) {
-    if ((lorente[1] == Fanta[1]) && (lorente[2] == Fanta[2])) {
-        clearTimeout(actualiza);
-        GameOver = true;
+    if (GOVER) {
+        document.getElementById("Fi").innerHTML = "DERROTA";
+        console.log("GOVER");
     }
 }
 
-function Teclat(T){ 
-	var Tecla = document.all ? T.which : T.key;
-	if (Tecla == "ArrowUp"&&mapa[lorente[0]-1][lorente[1]]!=0){
-		Teclat = 1; 
-	}
-	else if (Tecla == "ArrowRight"&&mapa[lorente[0]][lorente[1]+1]!=0){
-		Teclat = 2;
-	}
-	else if (Tecla=="ArrowDown"&&mapa[lorente[0]+1][lorente[1]]!=0){
-		Teclat = 3;
-	}	
-	else if (Tecla =="ArrowLeft"&&mapa[lorente[0]][lorente[1]-1]!=0){
-		Teclat = 4; 
-	}
+function Teclado(e) {
+    var Tecla = document.all ? e.which : e.key;
+
+    if (Tecla == "ArrowDown") {
+        TeclaPulsada = 1;
+    }
+    if (Tecla == "ArrowRight") {
+        TeclaPulsada = 2;
+    }
+    if (Tecla == "ArrowUp") {
+        TeclaPulsada = 3;
+    }
+    if (Tecla == "ArrowLeft") {
+        TeclaPulsada = 4;
+    }
 }
 
-function ComTemps (Pacman) {
-    if (Pacman >= 1000) {
-        clearTimeout(actualiza);
-        WIN = true;
+function ComJoc(PacM) {
+    if (PacM >= 1500) {
+        clearTimeout(Actua);
+        document.getElementById("Fi").innerHTML = "VICTORIA";
     }
 }

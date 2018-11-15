@@ -1,19 +1,37 @@
 <html>
+
     <head>
-        <title>TODO supply a title</title>
+        <title>PACMAN</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css.css">
         <script type="text/javascript" src="codi.js"></script>
     </head>
-    <body>
-       
-        <h1>PACMAN</h1>
-        <p><br> CREAT PER LUIS LORENTE ;)</p>
-        
-        <div id="mapa"></div>
 
-        <script>PROBA();</script>
+    <body id="all">
+
+        <div class="Marcador">
+
+            <h1 id="Titol">PACMAN</h1>
+            <h2>Lorente</h2>
+
+        </div>
+
+        <img src="images/Mur.png" id="Mur" style="display: none;">
+        <img src="images/Blanc.png" id="Cami" style="display: none;">
+        <img src="images/Fanta.png" id="Fanta" style="display: none;">
+        <img src="images/Pacman.png" id="Pacman" style="display: none;">
+        <canvas id="mapa" width="600" height="570"> </canvas>
+        <h2 id="Puntu">PUNTS: <span id="Punts"></span> <br> <span id="Fi"></span></h2>   
+        <div id="Fi"> </div>
+
+        <script>StartPacman();</script>
+
+        <footer>
+            <h3>COMO JUGAR:</h3>
+            <img src="images/Flechas.png">
+        </footer>
+
     </body>
 </html>

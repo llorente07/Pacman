@@ -1,32 +1,55 @@
 /*
-CSS PER FER BONIC EL PACMAN
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
 /* 
-    Created on : 12-nov-2018, 13:39:20
+    Created on : 15-nov-2018, 9:12:11
     Author     : Lorente35
 */
-
 body {
     font-family: 'Inconsolata', monospace;
-    line-height: 50%;
+    line-height: 60%;
     font-weight: bolder;
+    background-color: white;
+    color: black;
+    letter-spacing: 1px;
 }
 #mapa{
-    color: #000000;
-    position: absolute;
-    top:50%;
-    left:50%;
-    width:400px;
-    margin-left:-200px;
-    height:300px;
-    margin-top:-150px;
-    padding:5px;
+    color: #0022ff;
 }
 
-.Llorente {
+#Puntu{
+    background-color: orange;
+    width: 20rem;
+    height: 5rem;
+    padding: 1rem;
+
+    color: white;
+    text-align: center;
+    font-size: 1.8rem;
+    line-height: 80%;
+
+    margin-bottom: 0.5;
+    margin-right: 0;
+    margin-top: 0;
+}
+
+#Titol{
     color: orange;
+    font-size: 6rem;
+    line-height: 50%;
 }
 
-.Fanta {
-    color: blue;
+.Marcador{
+    width: 60px;
+}
+
+footer
+{
+    margin-top:50px;
+    width:20%;
+    height:250px;
+    background-color:orange;
 }
 
