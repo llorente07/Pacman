@@ -35,16 +35,21 @@ mapa = [
 ];
 
 //VARIABLES
+//ARRAY JUGAGOR
 var lorente = new Array();
+//ARRAY FANTASMAS
 var Fanta1 = new Array();
 var Fanta2 = new Array();
 var Fanta3 = new Array();
+//VARIABLE PER ACTUALIZAR 
 var Actua;
 var KO = false;
 var PacM = 0;
 var Direc = new Array();
+//VARIABLE PER LA TECLA PULSADA
 var TeclaPulsada;
 
+//CREACIO DEL MAPA I CONFIGURACIO DEL CANVAS
 function Crear() {
     var canvas = document.getElementById("mapa");
     var Foto;
@@ -64,7 +69,7 @@ function Crear() {
     }
     document.getElementById("Punts").innerHTML = (Math.floor(PacM));
 }
-
+//FUNCIO PER INICIAR EL JOC ON TROBEN EL INICI DELS ELEMENTS I L'ACTUALIZACIO DELS OBJECTES.
 function StartPacman() {
     IniciLlorente(lorente);
     IniciFanta(Fanta1);
@@ -74,6 +79,7 @@ function StartPacman() {
     Actua = setInterval(Moviment, 200);
 }
 
+//FUNCIO PER EL MOVIMENT DELS ELEMENTS I PER EL TEMPS DEL JOC.
 function Moviment() {
     var element = document.getElementById("all");
     document.onkeydown = Teclado;
@@ -86,6 +92,7 @@ function Moviment() {
     Crear();
 }
 
+//FUNCIO PER ASSIGNAR LA POSICIO INICIAL AL JUGADOR
 function IniciLlorente(Llorente) {
     var x, y;
 
@@ -94,14 +101,16 @@ function IniciLlorente(Llorente) {
         y = Math.floor((Math.random() * 30) + 0);
     } while (!ComPos(y, x))
 
+//ARRAY PER EL VALOR INCIAL DEL JUGADOR
     Llorente[1] = x;
     Llorente[2] = y;
     Llorente[3] = DirInici(y, x);
     Llorente[4] = DirInici(y, x);
-
+//POSICIO DEL JUGADOR AL MAPA
     mapa[y][x] = 2;
 }
 
+//FUNCIO PER ASSIGNAR LA POSICIO INICIAL AL FANTASMA
 function IniciFanta(Fanta) {
     var x, y;
     var Espai = false;
@@ -118,6 +127,7 @@ function IniciFanta(Fanta) {
     mapa[y][x] = 3;
 }
 
+//COMPROBAR SI UN OBJECTE ESTA EN UNA POSICIO VALIDA.
 function ComPos(y, x) {
     var C = false;
     if (mapa[y][x] == 1) {
@@ -126,10 +136,12 @@ function ComPos(y, x) {
     return C;
 }
 
+//COMPROBAR LA DIRECCIO ALEAOTORIA ESTIGUI CORRECTA.
 function ComDirec(element, Direc) {
     var x = element[2];
     var y = element[1];
 
+//COMPROBACIO DE CADA DIRRECIO
     if (ComPos(x + 1, y) != 0)
         Direc[1] = 1;
     else
@@ -148,12 +160,14 @@ function ComDirec(element, Direc) {
         Direc[4] = 0;
 }
 
+//ASGINAR LA POSICIO INICIAL A CADA ELEMENT
 function DirInici(y, x) {
     var Direc = new Array();
     var ELliure = false;
     var PosIni;
     var aux;
 
+//DIRECCIONS PER ON PUC ANAR
     if (ComPos(y + 1, x) == 1)
         Direc[1] = 1;
     else
@@ -178,10 +192,11 @@ function DirInici(y, x) {
             PosIni = aux;
         }
     } while (!ELliure)
-
+// AMB EL DO WHILE ASSIGNEM LA DIRECCIO ALEATORIO COMPROBADA A DALT.
     return PosIni;
 }
 
+//FUNCIO PER SABER SI UN FANTA VA A LA DIRECCIO CONTRARIA
 function Reves(Fanta) {
     var RevesCont;
     if (Fanta[3] == 1)
@@ -195,7 +210,7 @@ function Reves(Fanta) {
     return RevesCont;
 }
 
-
+//COMPROBA SI POT ANAR EN DOS SENTITS
 function DSentits(Direc) {
     var Dos = false;
     if ((Direc[1] == 1) && (Direc[3] == 1))
@@ -205,17 +220,18 @@ function DSentits(Direc) {
     return Dos;
 }
 
+//NOVA DIRECCIO DEL JUGADOR
 function MLlorente(Llorente) {
     NDLlorente(Llorente);
 
     if (Llorente[3] == 1 && mapa[Llorente[2] + 1][Llorente[1]] != 0) {
         mapa[Llorente[2]][Llorente[1]] = 1;
-
+//POSICIONS ANTIGUES PER COMPROBAR UNA POSSIBLE COLISIO
         Llorente[5] = Llorente[1];
         Llorente[6] = Llorente[2];
-
+//MOVIMENT DEL JUGADOR
         Llorente[2] += 1;
-
+//MODIFIQUEM EL MAPA AMB LA NOVA POSICIO
         mapa[Llorente[2]][Llorente[1]] = 2;
     }
     if (Llorente[3] == 2 && mapa[Llorente[2]][Llorente[1] + 1] != 0) {
@@ -240,7 +256,7 @@ function MLlorente(Llorente) {
         mapa[Llorente[2]][Llorente[1]] = 2;
     }
 }
-
+//MOVIMENT DEL FANTASMA IGUAL QUE JUGADOR
 function MFanta(Fanta) {
     NDFanta(Fanta);
 
@@ -284,7 +300,7 @@ function NDLlorente(Llorente) {
         Llorente[3] = TeclaPulsada;
     }
 }
-
+//NOVA POSICIO DEL FANTASMA
 function NDFanta(Fanta) {
     var ELliure = false;
     var NewDir;
@@ -293,11 +309,12 @@ function NDFanta(Fanta) {
 
     ComDirec(Fanta, Direc);
 
+//DIRECCIONS POSSIBLES
     for (var i = 1; i < 5; i++) {
         if (Direc[i] == 1)
             PosDir++;
     }
-
+//QUAN TROBI UNA CRUILLA QUE NO TORNI ENRERE
     if (PosDir > 2) {
         do {
             aux = Math.floor((Math.random() * 4) + 1);
@@ -319,6 +336,7 @@ function NDFanta(Fanta) {
                     ELliure = true;
                     NewDir = Fanta[3];
                     ComColisio(Fanta);
+                //ES TROBA UN MUR ESCOLLIR QUALSEVOL DIRECCIO
                 } else {
                     ELliure = true;
                     NewDir = aux;
@@ -327,11 +345,11 @@ function NDFanta(Fanta) {
             }
         } while (!ELliure)
     }
-
-
+//ASIGNACIO DE LA NOVA DIRECCIO
     Fanta[3] = NewDir;
 }
 
+//COMPROBAR LA COLISIO ENTRE JUGADOR I FANTASMA I S'HA ACABI EL JOC.
 function ComColisio(Fanta) {
     var GOVER = false;
 
@@ -364,6 +382,7 @@ function ComColisio(Fanta) {
     }
 }
 
+//FUNCIO PER DETECTAR EL TECLAT
 function Teclado(e) {
     var Tecla = document.all ? e.which : e.key;
 
